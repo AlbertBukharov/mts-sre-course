@@ -49,7 +49,6 @@ create table if not exists public.forecast
     summary     text
 );
 ```
-Чек:
 
 ### Проверка работоспособности
 Проверить, отправив соответствующий запрос на IP адрес Ingress-сервиса, с указанием Host:  
