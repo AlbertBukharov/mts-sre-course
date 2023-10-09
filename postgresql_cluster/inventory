@@ -1,0 +1,39 @@
+[etcd_cluster]  # recommendation: 3, or 5-7 nodes
+10.0.10.5
+10.0.10.6
+10.0.10.7
+
+# if dcs_exists: false and dcs_type: "consul"
+[consul_instances]  
+
+# if with_haproxy_load_balancing: true
+[balancers]
+10.0.10.2
+
+# PostgreSQL nodes
+[master]
+10.0.10.3 postgresql_exists=false
+
+[replica]
+10.0.10.4 postgresql_exists=false
+
+[postgres_cluster:children]
+master
+replica
+
+# if pgbackrest_install: true and "repo_host" is set
+[pgbackrest]  # optional (Dedicated Repository Host)
+
+
+# Connection settings
+[all:vars]
+ansible_connection='ssh'
+ansible_ssh_port='22'
+ansible_user='alberton'
+#ansible_ssh_pass='secretpassword'  # "sshpass" package is required for use "ansible_ssh_pass"
+ansible_ssh_private_key_file='/home/alberton/.ssh/yndx_key'
+
+[pgbackrest:vars]
+ansible_user='postgres'
+ansible_ssh_pass='secretpassword'
+

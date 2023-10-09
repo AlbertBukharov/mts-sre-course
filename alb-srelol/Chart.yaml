@@ -1,0 +1,6 @@
+apiVersion: v2
+name: alb-srelol
+description: A Helm chart for Alb SRE-Course
+type: application
+version: 0.1.0
+appVersion: "1.16.0"

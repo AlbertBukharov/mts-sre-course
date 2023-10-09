@@ -1,0 +1,75 @@
+# Default values for alb-srelol.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 3
+
+image:
+  repository: ghcr.io/ldest/sre-course/api
+  pullPolicy: IfNotPresent
+  # We dont use latest
+  tag: "c4f3862"
+
+variables:
+  ASPNETCORE_URLS: http://*:8014
+  CONNECTIONSTRINGS__PGCONNECTION: server=91.185.84.156; port=5000; database=weather2; user id=postgres; password=Valenok18;
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+serviceAccount: {}
+podAnnotations: {}
+podLabels: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 8014
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: alb-sre.lol
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  
+resources:
+  limits: 
+    cpu: 250m #25% of 1 CPU
+    memory: 128Mi
+  requests:
+    cpu: 100m #10% of 1 CPU
+    memory: 64Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
